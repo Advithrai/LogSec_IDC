@@ -1,0 +1,17 @@
+# --- Secrets: never commit these ---
+secret.key
+private_key.pem
+*.pem
+.env
+
+# --- Generated at runtime ---
+log_project/logs/
+log_project/chain.txt
+*.txt.enc
+run.log
+
+# --- Python ---
+__pycache__/
+*.pyc
+.venv/
+venv/

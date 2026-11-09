@@ -42,6 +42,14 @@ def send_email_alert(message):
     password = os.environ.get("LOGSEC_EMAIL_PASSWORD")  # Gmail App Password
     receiver = os.environ.get("LOGSEC_EMAIL_RECEIVER", sender)
 
+    # Treat the example/placeholder values as "not set".
+    placeholder_senders = {"your-gmail@gmail.com", "you@gmail.com"}
+    placeholder_passwords = {"abcdefghijklmnop", "xxxx-xxxx-xxxx-xxxx"}
+    if sender in placeholder_senders:
+        sender = None
+    if password in placeholder_passwords:
+        password = None
+
     if not sender or not password:
         print("[-] Email alert skipped: set LOGSEC_EMAIL_SENDER and LOGSEC_EMAIL_PASSWORD.")
         print("[!] ALERT:", message)

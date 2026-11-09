@@ -43,7 +43,7 @@ Every run of `log_chain.py` captures a snapshot of your log file, seals it, and 
 
 ```mermaid
 flowchart TB
-    A[📄 dummy.log<br/>source log] -->|snapshot| B[🗂 log_TIMESTAMP.txt]
+    A[📄 source.log<br/>monitored log] -->|snapshot| B[🗂 log_TIMESTAMP.txt]
     B -->|Fernet encrypt| C[🔒 log_TIMESTAMP.txt.enc]
     B -.->|plaintext deleted| X((🗑))
     C -->|SHA-256| D[# file hash]
@@ -215,7 +215,7 @@ LogSec_IDC/
 ├── assets/banner.svg
 └── log_project/
     ├── log_chain.py        ◆ the whole engine: keys, encryption, chaining, validation, alerts
-    └── dummy.log           ◇ sample source log (point LOG_FILE at a real one)
+    └── source.log          ◇ sample source log (point LOGSEC_SOURCE_LOG at a real one)
 ```
 
 Created on first run and **never committed** (see `.gitignore`):
@@ -239,7 +239,7 @@ All settings are constants at the top of `log_chain.py`:
 | Constant | Default | Purpose |
 |:--|:--|:--|
 | `PROJECT_DIR` | `~/log_project` | Root folder for everything |
-| `LOG_FILE` | `dummy.log` | **The log you want to protect.** Point it at something real, e.g. `/var/log/auth.log` |
+| `LOGSEC_SOURCE_LOG` (env) | `~/log_project/source.log` | **The log you want to protect.** Set it in `.env`, e.g. `/var/log/auth.log` |
 | `LOG_DIR` | `logs/` | Where encrypted snapshots go |
 | `CHAIN_FILE` | `chain.txt` | The chain ledger |
 | `KEY_FILE` | `secret.key` | Fernet encryption key |

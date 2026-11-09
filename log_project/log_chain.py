@@ -14,7 +14,6 @@ from cryptography.hazmat.primitives.asymmetric import rsa, padding
 PROJECT_DIR = os.path.expanduser("~/log_project")
 LOG_DIR = os.path.join(PROJECT_DIR, "logs")
 CHAIN_FILE = os.path.join(PROJECT_DIR, "chain.txt")
-LOG_FILE = os.path.join(PROJECT_DIR, "dummy.log")  # Replace with real log
 KEY_FILE = os.path.join(PROJECT_DIR, "secret.key")
 PRIVATE_KEY_FILE = os.path.join(PROJECT_DIR, "private_key.pem")
 PUBLIC_KEY_FILE = os.path.join(PROJECT_DIR, "public_key.pem")
@@ -22,7 +21,6 @@ POST_HOOK = os.path.join(PROJECT_DIR, "sign_and_push.sh")
 
 os.makedirs(LOG_DIR, exist_ok=True)
 
-# ---------------- EMAIL ALERT ----------------
 def load_dotenv(path=os.path.join(PROJECT_DIR, ".env")):
     """Load KEY=VALUE lines from an optional .env file (never commit it)."""
     if not os.path.exists(path):
@@ -36,6 +34,10 @@ def load_dotenv(path=os.path.join(PROJECT_DIR, ".env")):
 
 load_dotenv()
 
+# Defined after load_dotenv() so LOGSEC_SOURCE_LOG in .env is picked up.
+LOG_FILE = os.path.expanduser(os.environ.get("LOGSEC_SOURCE_LOG", os.path.join(PROJECT_DIR, "source.log")))
+
+# ---------------- EMAIL ALERT ----------------
 def send_email_alert(message):
     # Credentials come from the environment (or ~/log_project/.env), never the source code.
     sender = os.environ.get("LOGSEC_EMAIL_SENDER")
@@ -165,6 +167,10 @@ def collect_and_encrypt_snapshot():
     ts = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     plain_path = os.path.join(LOG_DIR, f"log_{ts}.txt")
     enc_path = plain_path + ".enc"
+
+    if not os.path.exists(LOG_FILE):
+        print(f"[!] Source log not found: {LOG_FILE}. Set LOGSEC_SOURCE_LOG in .env or create the file.")
+        sys.exit(1)
 
     # Copy log content
     with open(LOG_FILE, "rb") as src, open(plain_path, "wb") as dst:

@@ -1,0 +1,8 @@
+2025-11-10 09:00:02 INFO  sshd[1021]: Accepted publickey for alice from 10.0.0.12 port 52144
+2025-11-10 09:04:37 WARN  sshd[1034]: Failed password for invalid user admin from 203.0.113.45 port 40122
+2025-11-10 09:04:39 WARN  sshd[1034]: Failed password for invalid user admin from 203.0.113.45 port 40124
+2025-11-10 09:12:15 INFO  sudo: bob : TTY=pts/1 ; USER=root ; COMMAND=/usr/bin/systemctl restart nginx
+2025-11-10 09:12:16 INFO  systemd[1]: Restarted nginx.service - A high performance web server
+2025-11-10 09:30:48 INFO  cron[2210]: (root) CMD (/usr/bin/python3 /opt/backup/run.py)
+2025-11-10 09:45:03 ERROR kernel: [UFW BLOCK] IN=eth0 SRC=198.51.100.7 DST=10.0.0.5 PROTO=TCP DPT=3389
+2025-11-10 10:01:22 INFO  sshd[1102]: session closed for user alice

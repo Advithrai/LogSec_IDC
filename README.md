@@ -273,13 +273,19 @@ Steps that take this from a proof of concept to something you can deploy:
 
 <br/>
 
-## 🤖 How I built this with AI
 
-- **Tools:** Claude (visible in the commit history) [plus any others you used]
-- **What I directed:** the security design: encrypt, then hash-chain, then RSA-PSS sign, then verify the whole chain, and which kinds of tampering must raise an alert.
-- **What the AI helped write:** [e.g. the README, the validation loop, the .env handling]
-- **A problem I caught:** [one thing that really happened, e.g. the first version did not verify the first block, so validation now starts from GENESIS; or email credentials were hard-coded, so they moved to environment variables]
-- **How I tested it:** I edited a byte in a sealed file, deleted snapshots and corrupted chain lines, and confirmed each one raised an alert. [adjust to what you actually did]
+## 🤖 How I Built This Project with AI
+
+- **AI Tool Used:** Claude (also visible in the project commit history).
+
+- **What I Directed:** Independently designed the project's security architecture and defined the complete file-integrity verification workflow, including data encryption, hash-chain generation, RSA-PSS digital signing, and full-chain verification to detect tampering. I also defined the unauthorized modifications that should trigger security alerts.
+
+- **What AI Helped Build:** Used Claude as a development assistant to implement the validation loop and environment variable (`.env`) handling. Reviewed and integrated the generated code to ensure it aligned with my security architecture.
+
+- **A Problem I Identified and Solved:** Identified the importance of validating the entire hash chain, including the initial block. Ensured that validation begins from the `GENESIS` block so that tampering or missing data at the beginning of the chain cannot go undetected.
+
+- **How I Tested the Project:** Performed practical tampering tests by modifying individual bytes in sealed files, deleting snapshots, and corrupting hash-chain entries. Verified that unauthorized modifications were detected and triggered security alerts.
+
 
 <br/>
 

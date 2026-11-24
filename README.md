@@ -99,21 +99,22 @@ flowchart TB
 ## ⚡ Quickstart
 
 > [!NOTE]
-> The script uses fixed paths under **`~/log_project`**. Clone or copy the `log_project` folder there before you run it.
+> The script uses fixed paths under **`~/log_project`**. Copy the `log_project` folder there before you run it.
 
 ```bash
-# 1 · get the code into place
+# 1 · get the code and install the one dependency
 git clone https://github.com/Advithrai/LogSec_IDC.git
-cp -r LogSec_IDC/log_project ~/log_project
-cd ~/log_project
+cd LogSec_IDC
+pip install -r requirements.txt
 
-# 2 · one dependency
-pip install -r ../LogSec_IDC/requirements.txt
+# 2 · put the project folder where the script expects it
+cp -r log_project ~/log_project
 
 # 2b · (optional) email alerts: add your Gmail App Password
-cp ../LogSec_IDC/.env.example .env && nano .env
+cp .env.example ~/log_project/.env && nano ~/log_project/.env
 
 # 3 · seal a snapshot, extend the chain, verify
+cd ~/log_project
 python3 log_chain.py
 
 # 4 · verify only (no new snapshot)
@@ -269,6 +270,16 @@ Steps that take this from a proof of concept to something you can deploy:
 - [ ] **Separate the keys from the logs.** An attacker who controls `~/log_project` holds both. Keep `private_key.pem` on another host or in an HSM/KMS, and leave only `public_key.pem` on the verifying machine.
 - [ ] **Ship the chain off-box.** Use `sign_and_push.sh` to push `chain.txt` to a remote or write-once store, so deleting the whole ledger doesn't go unnoticed.
 - [ ] **Configurable paths.** Accept `--log-file` / `--project-dir` flags instead of fixed constants.
+
+<br/>
+
+## 🤖 How I built this with AI
+
+- **Tools:** Claude (visible in the commit history) [plus any others you used]
+- **What I directed:** the security design: encrypt, then hash-chain, then RSA-PSS sign, then verify the whole chain, and which kinds of tampering must raise an alert.
+- **What the AI helped write:** [e.g. the README, the validation loop, the .env handling]
+- **A problem I caught:** [one thing that really happened, e.g. the first version did not verify the first block, so validation now starts from GENESIS; or email credentials were hard-coded, so they moved to environment variables]
+- **How I tested it:** I edited a byte in a sealed file, deleted snapshots and corrupted chain lines, and confirmed each one raised an alert. [adjust to what you actually did]
 
 <br/>
 
